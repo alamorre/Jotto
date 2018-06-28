@@ -40,11 +40,27 @@ describe('if there are no words guessed', () => {
   });
 });
 
+// Note, we are not requirign it to be a table
 describe('if there are words guessed', () => {
-  test('renders without error', () => {
-
+  let wrapper
+  const guessedWords = [
+    {guessedWord: 'train', letterMatchCount: 3},
+    {guessedWord: 'agile', letterMatchCount: 1},
+    {guessedWord: 'party', letterMatchCount: 5}
+  ];
+  beforeEach(() => {
+    wrapper = setup({guessedWords});
   });
-  test('renders a table of guessed word', () => {
-
+  test('renders without error', () => {
+    const component = findByTestAttr(wrapper, 'component-guessed-words');
+    expect(component.length).toBe(1);
+  });
+  test('renders "guessed words" section', () => {
+    const guessedWordsNode = findByTestAttr(wrapper, 'guessed-words');
+    expect(guessedWordsNode.length).toBe(1);
+  });
+  test('displayed the correct number of guessed words', () => {
+    const guessedWordNode = findByTestAttr(wrapper, 'guessed-word');
+    expect(guessedWordNode.length).toBe(guessedWords.length);
   });
 });
