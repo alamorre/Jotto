@@ -68,3 +68,19 @@ Randomly placed notes:
 - shallow is to create a virtual DOM
 - use .dive() to get child component of shallow (In this case, Input)
 */
+
+
+
+describe('redux props', () => {
+  test('has success piece of state as prop', () => {
+    const success = true;
+    const wrapper = setup({success});
+    const successProp = wrapper.instance().props.success;
+    expect(successProp).toBe(true);
+  });
+  test('`guessWord` action creator is a prop', () => {
+    const wrapper = setup();
+    const guessWordProp = wrapper.instance().props.guessWord;
+    expect(guessWordProp).toBeInstanceOf(Function);
+  });
+});
