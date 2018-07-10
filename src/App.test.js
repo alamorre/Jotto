@@ -1,11 +1,11 @@
 import React from 'react';
+// ADD THESE 3 LINES TOGETHER EVERY TIME
 import Enzyme, {shallow} from 'enzyme';
-
 import EnzymeAdapter from 'enzyme-adapter-react-16';
-Enzyme.configure({ adapter: new EnzymeAdapter() });
+Enzyme.configure({ adapter: new EnzymeAdapter(), disableLifecycleMethods: true });
 
 import {storeFactory} from '../test/testUtils';
-import App from './App';
+import App, {UnconnectedApp} from './App';
 
 /**
  * @function setup
@@ -43,3 +43,19 @@ import App from './App';
      expect(getSecretWordProp).toBeInstanceOf(Function);
    });
  });
+
+test('`getSecretWord` runs on app mount', () => {
+  const getSecretWordMock = jest.fn();
+  const props = {
+    getSecretWord: getSecretWordMock,
+    success: false,
+    guessedWords: []
+  }
+  // Setup the App component with the getSecretWordMock as getSecretWord prop
+  const wrapper = shallow(<UnconnectedApp {...props} />);
+  // run the lifecycle disableLifecycleMethod
+  wrapper.instance().componentDidMount();
+  //check if the mock ran
+  const getSecretWordCallCount = getSecretWordMock.mock.calls.length;
+  expect(getSecretWordCallCount).toBe(1);
+});
